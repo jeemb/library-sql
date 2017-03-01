@@ -47,10 +47,10 @@ class Author
         $GLOBALS['DB']->exec("DELETE FROM books_authors WHERE author_id = {$this->getId()};");
     }
 
-    function addBook($new_book)
+    function addBook($id)
     {
 
-        $GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$new_book->getId()}, {$this->getId()});");
+        $GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$id}, {$this->getId()});");
     }
 
     function getBooks()

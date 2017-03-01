@@ -24,6 +24,14 @@
         return $app['twig']->render('index.html.twig');
     });
 
+    $app->get('/authors', function() use ($app) {
+        return $app['twig']->render('authors.html.twig', ['authors' => Author::getAll()]);
+    });
+
+    $app->get('/books', function() use ($app) {
+        return $app['twig']->render('books.html.twig', ['books' => Books::getAll()]);
+    });
+
     $app->post('/add_book', function() use ($app) {
         $title = $_POST['title'];
         $total_copies = $_POST['total-copies'];
@@ -47,6 +55,14 @@
         $new_author = new Author($name);
         $new_author->save();
         return $app['twig']->render('authors.html.twig', ['authors' => Author::getAll()]);
+    });
+
+    $app->post('/assign_book/{id}', function($id) use ($app) {
+        $author = Author::find($id);
+
+        $author->addBook($_POST['assign-book']);
+
+        return $app->redirect("/author/".$id);
     });
 
 

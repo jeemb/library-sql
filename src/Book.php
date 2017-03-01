@@ -69,15 +69,15 @@ class Book
         $this->id = $GLOBALS['DB']->lastInsertId();
     }
 
-    function update($title, $total_copies, $copies_in, $copies_out)
+    function update($new_title, $new_total_copies)
     {
-        $this->setTitle($title);
-        $this->setTotalCopies($total_copies);
-        $this->setCopiesIn($copies_in);
-        $this->setCopiesOut($copies_out);
-
-        $GLOBALS['DB']->exec("UPDATE books SET title = '{$this->title}', total_copies = {$this->total_copies}, copies_in = {$this->copies_in}, copies_out = {$this->copies_out} WHERE id = {$this->id}");
-
+        if ($new_total_copies >= $this->copies_out)
+        {
+            $this->setTitle($new_title);
+            $this->setCopiesIn($new_total_copies - $this->copies_out);
+            $this->setTotalCopies($new_total_copies);
+            $GLOBALS['DB']->exec("UPDATE books SET title = '{$this->title}', total_copies = {$this->total_copies}, copies_in = {$this->copies_in} WHERE id = {$this->id}");
+        } 
     }
 
     function delete()

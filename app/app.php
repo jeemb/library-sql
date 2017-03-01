@@ -29,7 +29,7 @@
     });
 
     $app->get('/books', function() use ($app) {
-        return $app['twig']->render('books.html.twig', ['books' => Books::getAll()]);
+        return $app['twig']->render('books.html.twig', ['books' => Book::getAll()]);
     });
 
     $app->post('/add_book', function() use ($app) {
@@ -65,10 +65,16 @@
 
     $app->post('/assign_book/{id}', function($id) use ($app) {
         $author = Author::find($id);
-
         $author->addBook($_POST['assign-book']);
-
         return $app->redirect("/author/".$id);
+    });
+
+    $app->patch('/edit_book/{id}', function($id) use ($app) {
+        $book = Book::find($id);
+        $new_title = $_POST['title'];
+        $new_total_copies = $_POST['total-copies'];
+        $book->update($new_title, $new_total_copies);
+        return $app->redirect("/book/".$id);
     });
 
 

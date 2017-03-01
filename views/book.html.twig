@@ -35,4 +35,13 @@
 </form>
 {% endif %}
 
+<form action="/edit_book/{{ book.getId }}" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <label for="edit-book">Edit Book</label>
+    <input type="text" name="title" value="{{ book.getTitle }}">
+    <input type="number" name="total-copies" min="{{book.getCopiesOut}}" value="{{ book.getTotalCopies }}">
+
+    <button type="submit" class="btn btn-warning">Edit</button>
+</form>
+
 {% endblock %}

@@ -69,6 +69,12 @@ class Book
         $this->id = $GLOBALS['DB']->lastInsertId();
     }
 
+    static function find($id)
+    {
+        $book = $GLOBALS['DB']->query("SELECT * FROM books WHERE id={$id}");
+        return $book->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Book", ["title", "total_copies", "copies_in", "copies_out"])[0];
+    }
+
     static function getAll()
     {
         $returned_books = $GLOBALS['DB']->query("SELECT * FROM books;");

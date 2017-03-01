@@ -35,6 +35,23 @@
             //Assert
             $this->assertEquals($result, [$new_book]);
         }
+
+        function test_find()
+        {
+            //Arrange
+            $title = "Crime and Punishment 4 PHP Developers";
+            $total_copies = 10;
+            $copies_in = 10;
+            $copies_out = 0;
+            $new_book = new Book($title, $total_copies, $copies_in, $copies_out);
+            $new_book->save();
+
+            //Act
+            $result = Book::find($new_book->getId());
+
+            //Assert
+            $this->assertEquals($result, $new_book);
+        }
     }
 
 ?>

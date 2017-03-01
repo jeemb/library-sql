@@ -57,6 +57,12 @@
         return $app['twig']->render('authors.html.twig', ['authors' => Author::getAll()]);
     });
 
+    $app->post('/assign_author/{id}', function($id) use ($app) {
+        $book = Book::find($id);
+        $book->addAuthor($_POST['assign-author']);
+        return $app->redirect("/book/".$id);
+    });
+
     $app->post('/assign_book/{id}', function($id) use ($app) {
         $author = Author::find($id);
 

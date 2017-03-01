@@ -24,14 +24,14 @@
 </ul>
 
 {% if all_authors is not empty %}
-<form action="/assign_author" method="post">
+<form action="/assign_author/{{ book.getId }}" method="post">
     <label for="assign-author">Assign an author</label>
         <select name="assign-author">
             {% for author in all_authors %}
             <option value="{{ author.getId }}">{{ author.getName }}</option>
             {% endfor %}
         </select>
-    <button type="submit" class="btn btn-success"></button>
+    <button type="submit" class="btn btn-success">Assign</button>
 </form>
 {% endif %}
 

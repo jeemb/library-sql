@@ -3,6 +3,7 @@
 {% block title %}{{ book.getTitle }}{% endblock %}
 
 {% block content %}
+
 <h1>{{ book.getTitle }} Information</h1>
 
 <ul>
@@ -42,6 +43,12 @@
     <input type="number" name="total-copies" min="{{book.getCopiesOut}}" value="{{ book.getTotalCopies }}">
 
     <button type="submit" class="btn btn-warning">Edit</button>
+</form>
+
+<form action="/delete_book/{{ book.getId }}" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <label for="delete-book">Delete Book</label>
+    <button type="submit" class="btn btn-danger">Delete</button>
 </form>
 
 {% endblock %}

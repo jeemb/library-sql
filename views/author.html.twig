@@ -28,4 +28,18 @@
 </form>
 {% endif %}
 
+<form action="/edit_author/{{ author.getId }}" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <label for="edit-author">Edit Author</label>
+    <input type="text" name="new-name" value="{{ author.getName }}">
+
+    <button type="submit" class="btn btn-warning">Edit</button>
+</form>
+
+<form action="/delete_author/{{ author.getId }}" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <label for="delete-author">Delete Author</label>
+    <button type="submit" class="btn btn-danger">Delete</button>
+</form>
+
 {% endblock %}

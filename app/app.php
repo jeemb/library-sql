@@ -77,6 +77,30 @@
         return $app->redirect("/book/".$id);
     });
 
+    $app->patch('/edit_author/{id}', function($id) use ($app) {
+        $author = Author::find($id);
+        $new_name = $_POST['new-name'];
+        $author->update($new_name);
+        return $app->redirect("/author/".$id);
+    });
+
+    $app->delete('/delete_book/{id}', function($id) use ($app) {
+        $book = Book::find($id);
+        $book->delete();
+        return $app->redirect("/books");
+    });
+
+    $app->delete('/delete_book/{id}', function($id) use ($app) {
+        $book = Book::find($id);
+        $book->delete();
+        return $app->redirect("/books");
+    });
+
+    $app->delete('/delete_author/{id}', function($id) use ($app) {
+        $author = Author::find($id);
+        $author->delete();
+        return $app->redirect("/authors");
+    });
 
     return $app;
 ?>

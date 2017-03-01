@@ -46,6 +46,25 @@ class Author
         $GLOBALS['DB']->exec("DELETE FROM authors WHERE id = {$this->getId()};");
     }
 
+    function addBook($new_book)
+    {
+
+        $GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$new_book->getId()}, {$this->getId()});");
+    }
+
+    function getBooks()
+    {
+        $returned_books = $GLOBALS['DB']->query("SELECT books.* FROM authors
+            JOIN books_authors ON (books_authors.author_id = authors.id)
+            JOIN books ON (books.id = books_authors.book_id)
+            WHERE authors.id = {$this->getId()};");
+        if ($returned_books) {
+            return $returned_books->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Book', ['title', 'total_copies', 'copies_in', 'copies_out', 'id']);
+        }
+
+        return [];
+    }
+
     static function find($id)
     {
         $author = $GLOBALS['DB']->query("SELECT * FROM authors WHERE id={$id}");

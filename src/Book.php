@@ -69,6 +69,22 @@ class Book
         $this->id = $GLOBALS['DB']->lastInsertId();
     }
 
+    function update($title, $total_copies, $copies_in, $copies_out)
+    {
+        $this->setTitle($title);
+        $this->setTotalCopies($total_copies);
+        $this->setCopiesIn($copies_in);
+        $this->setCopiesOut($copies_out);
+
+        $GLOBALS['DB']->exec("UPDATE books SET title = '{$this->title}', total_copies = {$this->total_copies}, copies_in = {$this->copies_in}, copies_out = {$this->copies_out} WHERE id = {$this->id}");
+
+    }
+
+    function delete()
+    {
+        $GLOBALS['DB']->exec("DELETE FROM books WHERE id = {$this->getId()};");
+    }
+
     static function find($id)
     {
         $book = $GLOBALS['DB']->query("SELECT * FROM books WHERE id={$id}");

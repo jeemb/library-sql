@@ -6,6 +6,7 @@
     */
 
     require_once "src/Book.php";
+    require_once "src/Author.php";
 
     $server = 'mysql:host=localhost:8889;dbname=library_test';
     $username = 'root';
@@ -17,6 +18,7 @@
         protected function TearDown()
         {
             Book::deleteAll();
+            Author::deleteAll();
         }
 
         function test_save()
@@ -96,6 +98,28 @@
             //Assert
             $this->assertEquals($result, [$new_book2]);
 
+        }
+
+        function test_addAuthor()
+        {
+            //Arrange
+            $name = "George R.R. Martin";
+            $new_author = new Author($name);
+            $new_author->save();
+
+            $title = "Crime and Punishment 4 PHP Developers";
+            $total_copies = 10;
+            $copies_in = 10;
+            $copies_out = 0;
+            $new_book = new Book($title, $total_copies, $copies_in, $copies_out);
+            $new_book->save();
+
+            //Act
+            $new_book->addAuthor($new_author);
+            $result = $new_book->getAuthors();
+
+            //Assert
+            $this->assertEquals([$new_author], $result);
         }
     }
 

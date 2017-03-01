@@ -44,6 +44,7 @@ class Author
     function delete()
     {
         $GLOBALS['DB']->exec("DELETE FROM authors WHERE id = {$this->getId()};");
+        $GLOBALS['DB']->exec("DELETE FROM books_authors WHERE author_id = {$this->getId()};");
     }
 
     function addBook($new_book)
@@ -80,6 +81,7 @@ class Author
 
     static function deleteAll()
     {
+        $GLOBALS['DB']->exec("DELETE FROM books_authors;");
         $GLOBALS['DB']->exec("DELETE FROM authors;");
     }
 }

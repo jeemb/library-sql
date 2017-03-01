@@ -65,7 +65,7 @@ class Book
 
     function save()
     {
-        $GLOBALS['DB']->exec("INSERT INTO books (title, total_copies, copies_in, copies_out) VALUES ('{$this->getTitle()}', '{$this->getTotalCopies()}', '{$this->getCopiesIn()}', '{$this->getCopiesOut()};')");
+        $GLOBALS['DB']->exec("INSERT INTO books (title, total_copies, copies_in, copies_out) VALUES ('{$this->getTitle()}', '{$this->getTotalCopies()}', '{$this->getCopiesIn()}', '{$this->getCopiesOut()}');");
         $this->id = $GLOBALS['DB']->lastInsertId();
     }
 

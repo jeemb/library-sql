@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Authors{% endblock %}
+
+{% block content %}
+<h1>Authors</h1>
+
+{% if authors is not empty %}
+    <ul>
+    {% for author in authors %}
+        <li><a href="/author/{{ author.getId }}">Name: {{ author.getName }}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% endblock %}

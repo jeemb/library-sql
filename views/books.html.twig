@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Books{% endblock %}
+
+{% block content %}
+<h1>Books</h1>
+
+{% if books is not empty %}
+    <ul>
+    {% for book in books %}
+        <li><a href="/book/{{ book.getId }}">Title: {{ book.getTitle }}</a> | {{ book.getCopiesIn }}/{{ book.getTotalCopies }} available in library</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% endblock %}

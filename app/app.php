@@ -11,7 +11,7 @@
 
     $app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => __DIR__."/../views"]);
 
-    $server = "mysql:host-localhost:8889;dbname=library";
+    $server = "mysql:host=localhost:8889;dbname=library";
     $username = 'root';
     $password = 'root';
     $DB = new PDO($server, $username, $password);
@@ -22,6 +22,31 @@
 
     $app->get('/', function() use ($app) {
         return $app['twig']->render('index.html.twig');
+    });
+
+    $app->post('/add_book', function() use ($app) {
+        $title = $_POST['title'];
+        $total_copies = $_POST['total-copies'];
+        $new_book = new Book($title, $total_copies, $total_copies, 0);
+        $new_book->save();
+        return $app['twig']->render('books.html.twig', ['books' => Book::getAll()]);
+    });
+
+    $app->get('/book/{id}', function($id) use ($app) {
+        $book = Book::find($id);
+        return $app['twig']->render('book.html.twig', ['book' => $book, 'all_authors' => Author::getAll(), 'authors'=>$book->getAuthors()]);
+    });
+
+    $app->get('/author/{id}', function($id) use ($app) {
+        $author = Author::find($id);
+        return $app['twig']->render('author.html.twig', ['author' => $author, 'all_books' => Book::getAll(), 'books'=>$author->getBooks()]);
+    });
+
+    $app->post('/add_author', function() use ($app) {
+        $name = $_POST['name'];
+        $new_author = new Author($name);
+        $new_author->save();
+        return $app['twig']->render('authors.html.twig', ['authors' => Author::getAll()]);
     });
 
 

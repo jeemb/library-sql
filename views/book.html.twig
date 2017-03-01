@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ book.getTitle }}{% endblock %}
+
+{% block content %}
+<h1>{{ book.getTitle }} Information</h1>
+
+<ul>
+    <li>Title: {{ book.getTitle }}</li>
+    <ul>
+        <li>Total # of Copies: {{ book.getTotalCopies }}</li>
+        <li>Current stock: {{ book.getCopiesIn }}</li>
+        <li>On loan: {{ book.getCopiesOut }}</li>
+        <li>
+            <ul>
+            {% if authors is not empty %}
+            {% for author in authors %}
+                <li><a href="/author/{{ author.getId }}">{{author.getName}}</a></li>
+            {% endfor %}
+            {% endif %}
+            </ul>
+        </li>
+    </ul>
+</ul>
+
+{% if all_authors is not empty %}
+<form action="/assign_author" method="post">
+    <label for="assign-author">Assign an author</label>
+        <select name="assign-author">
+            {% for author in all_authors %}
+            <option value="{{ author.getId }}">{{ author.getName }}</option>
+            {% endfor %}
+        </select>
+    <button type="submit" class="btn btn-success"></button>
+</form>
+{% endif %}
+
+{% endblock %}

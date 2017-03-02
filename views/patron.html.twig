@@ -1,0 +1,54 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ patron.getName }}{% endblock %}
+
+{% block content %}
+<h1>{{ patron.getName }} Information</h1>
+
+<h4>Current books checked out:</h4>
+<ul>
+    {% if booksout is not empty %}
+    {% for book in booksout %}
+    <li><a href="/book/{{ book.getId }}">{{book.getTitle}}</a></li>
+    {% endfor %}
+    {% else %}
+    <li>{{ patron.getName }} has no books checked out D:</li>
+    {% endif %}
+</ul>
+
+<h4>OVERDUE BOOKS:</h4>
+<ul>
+    {% if overdue_books is not empty %}
+    {% for book in overdue_books %}
+    <li><a href="/book/{{ book.getId }}">{{book.getTitle}}</a></li>
+    {% endfor %}
+    {% else %}
+    <li>{{ patron.getName }} has no overdue books! :D </li>
+    {% endif %}
+</ul>
+
+<h4>Historical checkouts for {{ patron.getName }}</h4>
+<ul>
+    {% if books is not empty %}
+    {% for book in books %}
+        <li><a href="/book/{{ book.getId }}">{{book.getTitle}}</a></li>
+    {% endfor %}
+    {% endif %}
+</ul>
+
+
+<form action="/edit_patron/{{ patron.getId }}" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <label for="edit-patron">Edit Author</label>
+    <input type="text" name="new-name" value="{{ patron.getName }}">
+
+    <button type="submit" class="btn btn-warning">Edit</button>
+</form>
+
+<form action="/delete_patron/{{ patron.getId }}" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <label for="delete-patron">Delete Author</label>
+    <button type="submit" class="btn btn-danger">Delete</button>
+</form>
+
+{% endblock %}

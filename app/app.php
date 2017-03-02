@@ -4,6 +4,8 @@
     require_once __DIR__."/../vendor/autoload.php";
     require_once __DIR__."/../src/Book.php";
     require_once __DIR__."/../src/Author.php";
+    require_once __DIR__."/../src/Patron.php";
+
 
     $app = new Silex\Application();
 
@@ -42,7 +44,7 @@
 
     $app->get('/book/{id}', function($id) use ($app) {
         $book = Book::find($id);
-        return $app['twig']->render('book.html.twig', ['book' => $book, 'all_authors' => Author::getAll(), 'authors'=>$book->getAuthors()]);
+        return $app['twig']->render('book.html.twig', ['book' => $book, 'all_authors' => Author::getAll(), 'authors'=>$book->getAuthors(), 'all_patrons' => Patron::getAll()]);
     });
 
     $app->get('/author/{id}', function($id) use ($app) {
@@ -67,6 +69,13 @@
         $author = Author::find($id);
         $author->addBook($_POST['assign-book']);
         return $app->redirect("/author/".$id);
+    });
+
+    $app->post('/checkout_book/{id}', function($id) use ($app) {
+        $book = Book::find($id);
+        $patron_id = $_POST['checkout-book'];
+        $book->checkout();
+        return $app->redirect("/patron/".$patron_id);
     });
 
     $app->patch('/edit_book/{id}', function($id) use ($app) {
@@ -100,6 +109,23 @@
         $author = Author::find($id);
         $author->delete();
         return $app->redirect("/authors");
+    });
+
+    $app->get('/patrons', function() use ($app) {
+        $patrons = Patron::getAll();
+        return $app['twig']->render('patrons.html.twig', ['all_patrons' => Patron::getAll()]);
+    });
+
+    $app->post('/add_patron', function() use ($app) {
+        $name = $_POST['name'];
+        $new_patron = new Patron($name);
+        $new_patron->save();
+        return $app->redirect("/patrons");
+    });
+
+    $app->get('/patron/{id}', function($id) use($app) {
+        $patron = Patron::find($id);
+        return $app['twig']->render('patron.html.twig', ['patron' => $patron, 'books' => $patron->getBooks(), 'overdue_books' => $patron->getOverdue(), 'booksout' => $patron->getBooksOut()]);
     });
 
     return $app;

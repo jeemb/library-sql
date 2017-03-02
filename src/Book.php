@@ -104,6 +104,18 @@ class Book
 
         return [];
     }
+    function getPatrons()
+    {
+        $returned_patrons = $GLOBALS['DB']->query("SELECT patrons.* FROM books
+            JOIN books_patrons ON (books_patrons.book_id = books.id)
+            JOIN patrons ON (patrons.id = books_patrons.patron_id)
+            WHERE books.id = {$this->getId()} AND returned = 0;");
+        if ($returned_patrons) {
+            return $returned_patrons->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Patron', ['name', 'id']);
+        }
+
+        return [];
+    }
 
     function checkout($id)
     {

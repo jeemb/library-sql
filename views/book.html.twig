@@ -24,6 +24,19 @@
     </ul>
 </ul>
 
+{% if all_patrons is not empty %}
+
+<form action="/checkout_book/{{ book.getId }}" method="post">
+    <label for="checkout-book">Checkout Book</label>
+        <select name="checkout-book">
+            {% for patron in all_patrons %}
+            <option value="{{ patron.getId }}">{{ patron.getName }}</option>
+            {% endfor %}
+        </select>
+    <button type="submit">Checkout</button>
+</form>
+{% endif %}
+
 {% if all_authors is not empty %}
 <form action="/assign_author/{{ book.getId }}" method="post">
     <label for="assign-author">Assign an author</label>

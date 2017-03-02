@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Patrons{% endblock %}
+
+{% block content %}
+<h1>Patrons</h1>
+
+{% if all_patrons is not empty %}
+    <ul>
+    {% for patron in all_patrons %}
+        <li><a href="/patron/{{ patron.getId }}">Name: {{ patron.getName }}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% endblock %}

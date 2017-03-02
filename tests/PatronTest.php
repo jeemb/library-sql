@@ -67,6 +67,37 @@
             $this->assertEquals($result, "Georgie 'rail-road' Martinizer");
         }
 
+        function test_getOverdue()
+        {
+            //Arrange
+            $name = "Shaun Piiterson";
+            $new_patron = new Patron($name);
+            $new_patron->save();
+
+            $title = "Crime and Punishment 4 PHP Developers";
+            $total_copies = 10;
+            $copies_in = 10;
+            $copies_out = 0;
+            $new_book = new Book($title, $total_copies, $copies_in, $copies_out);
+            $new_book->save();
+
+            $checkout_date = date('Y-m-d');
+            $due_date = date("Y-m-d", strtotime("-14 days"));
+            $false = 0;
+
+            $new_book->setCopiesIn($new_book->getCopiesIn()-1);
+            $new_book->setCopiesOut($new_book->getCopiesOut()+1);
+            $GLOBALS['DB']->exec("UPDATE books SET copies_in = {$new_book->getCopiesIn()}, copies_out = {$new_book->getCopiesOut()};");
+
+            $GLOBALS['DB']->exec("INSERT INTO books_patrons (book_id, patron_id, checkout_date, due_date, returned) VALUES ({$new_book->getId()}, {$new_patron->getId()}, '{$checkout_date}', '{$due_date}', {$false});");
+
+            //Act
+            $result = $new_patron->getOverdue();
+
+            //Assert
+            $this->assertEquals([$new_book], $result);
+        }
+
         function test_delete()
         {
             //Arrange
@@ -86,8 +117,6 @@
             $this->assertEquals($result, [$new_patron2]);
 
         }
-
-        
 
     }
 

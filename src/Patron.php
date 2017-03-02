@@ -73,6 +73,24 @@ class Patron
         return [];
     }
 
+    function getOverdue()
+    {
+        $overdue_books = [];
+        $checkedout_books = $GLOBALS['DB']->query("SELECT * FROM patrons
+            JOIN books_patrons ON (books_patrons.patron_id = patrons.id)
+            JOIN books ON (books.id = books_patrons.book_id)
+            WHERE patrons.id = {$this->getId()} AND returned = 0;");
+        if ($checkedout_books) {
+            foreach ($checkedout_books as $book) {
+                if (strtotime(date('Y-m-d')) > strtotime($book['due_date'])) {
+                    $overdue_book = new Book($book['title'], $book['total_copies'], $book['copies_in'], $book['copies_out'], $book['book_id']);
+                    array_push($overdue_books, $overdue_book);
+                }
+            }
+        }
+        return $overdue_books;
+    }
+
     static function find($id)
     {
         $patron = $GLOBALS['DB']->query("SELECT * FROM patrons WHERE id={$id}");

@@ -7,6 +7,7 @@
 
     require_once "src/Book.php";
     require_once "src/Author.php";
+    require_once "src/Patron.php";
 
     $server = 'mysql:host=localhost:8889;dbname=library_test';
     $username = 'root';
@@ -19,6 +20,7 @@
         {
             Book::deleteAll();
             Author::deleteAll();
+            Patron::deleteAll();
         }
 
         function test_save()
@@ -115,11 +117,56 @@
             $new_book->save();
 
             //Act
-            $new_book->addAuthor($new_author);
+            $new_book->addAuthor($new_author->getId());
             $result = $new_book->getAuthors();
 
             //Assert
             $this->assertEquals([$new_author], $result);
+        }
+
+        function test_checkout()
+        {
+            //Arrange
+            $name = "Shaun Piiterson";
+            $new_patron = new Patron($name);
+            $new_patron->save();
+
+            $title = "Crime and Punishment 4 PHP Developers";
+            $total_copies = 10;
+            $copies_in = 10;
+            $copies_out = 0;
+            $new_book = new Book($title, $total_copies, $copies_in, $copies_out);
+            $new_book->save();
+
+            //Act
+            $new_book->checkout($new_patron->getId());
+            $result = $new_patron->getBooks();
+
+            //Assert
+            $this->assertEquals([$new_book], $result);
+        }
+
+        function test_return()
+        {
+            //Arrange
+            $name = "Shaun Piiterson";
+            $new_patron = new Patron($name);
+            $new_patron->save();
+
+            $title = "Crime and Punishment 4 PHP Developers";
+            $total_copies = 10;
+            $copies_in = 10;
+            $copies_out = 0;
+            $new_book = new Book($title, $total_copies, $copies_in, $copies_out);
+            $new_book->save();
+            $new_book->checkout($new_patron->getId());
+
+            //Act
+            $new_book->returnCopy($new_patron->getId());
+
+            //Assert
+            $result = $new_patron->getBooksOut();
+            $this->assertEquals([], $result);
         }
     }
 

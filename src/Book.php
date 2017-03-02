@@ -77,7 +77,7 @@ class Book
             $this->setCopiesIn($new_total_copies - $this->copies_out);
             $this->setTotalCopies($new_total_copies);
             $GLOBALS['DB']->exec("UPDATE books SET title = '{$this->title}', total_copies = {$this->total_copies}, copies_in = {$this->copies_in} WHERE id = {$this->id}");
-        } 
+        }
     }
 
     function delete()
@@ -103,6 +103,31 @@ class Book
         }
 
         return [];
+    }
+
+    function checkout($id)
+    {
+        $checkout_date = date('Y-m-d');
+        $due_date = date("Y-m-d", strtotime("+14 days"));
+        $false = "false";
+
+        $this->setCopiesIn($this->getCopiesIn()-1);
+        $this->setCopiesOut($this->getCopiesOut()+1);
+        $GLOBALS['DB']->exec("UPDATE books SET copies_in = {$this->getCopiesIn()}, copies_out = {$this->getCopiesOut()};");
+
+        $GLOBALS['DB']->exec("INSERT INTO books_patrons (book_id, patron_id, checkout_date, due_date, returned) VALUES ({$this->getId()}, {$id}, '{$checkout_date}', '{$due_date}', {$false});");
+
+    }
+
+    function returnCopy($id)
+    {
+
+        $this->setCopiesIn($this->getCopiesIn()+1);
+        $this->setCopiesOut($this->getCopiesOut()-1);
+        $GLOBALS['DB']->exec("UPDATE books SET copies_in = {$this->getCopiesIn()}, copies_out = {$this->getCopiesOut()};");
+
+        $GLOBALS['DB']->exec("UPDATE books_patrons SET returned = 1 WHERE patron_id={$id} AND book_id = {$this->getId()};");
+
     }
 
     static function find($id)

@@ -7,6 +7,7 @@
 
     require_once "src/Author.php";
     require_once "src/Book.php";
+    require_once "src/Patron.php";
 
     $server = 'mysql:host=localhost:8889;dbname=library_test';
     $username = 'root';
@@ -19,6 +20,7 @@
         {
             Author::deleteAll();
             Book::deleteAll();
+            Patron::deleteAll();
         }
 
         function test_save()
@@ -100,7 +102,7 @@
             $new_book->save();
 
             //Act
-            $new_author->addBook($new_book);
+            $new_author->addBook($new_book->getId());
             $result = $new_author->getBooks();
 
             //Assert

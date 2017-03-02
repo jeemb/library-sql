@@ -27,6 +27,18 @@
     {% endif %}
 </ul>
 
+{% if booksout is not empty %}
+<form action="/return_book/{{ patron.getId }}" method="post">
+    <label for="book">Return Book</label>
+        <select name="book">
+            {% for book in booksout %}
+            <option value="{{ book.getId }}">{{ book.getTitle }}</option>
+            {% endfor %}
+        </select>
+    <button type="submit">Return</button>
+</form>
+{% endif %}
+
 <h4>Historical checkouts for {{ patron.getName }}</h4>
 <ul>
     {% if books is not empty %}
@@ -36,10 +48,9 @@
     {% endif %}
 </ul>
 
-
 <form action="/edit_patron/{{ patron.getId }}" method="post">
     <input type="hidden" name="_method" value="patch">
-    <label for="edit-patron">Edit Author</label>
+    <label for="edit-patron">Edit Patron</label>
     <input type="text" name="new-name" value="{{ patron.getName }}">
 
     <button type="submit" class="btn btn-warning">Edit</button>
@@ -47,7 +58,7 @@
 
 <form action="/delete_patron/{{ patron.getId }}" method="post">
     <input type="hidden" name="_method" value="delete">
-    <label for="delete-patron">Delete Author</label>
+    <label for="delete-patron">Delete Patron</label>
     <button type="submit" class="btn btn-danger">Delete</button>
 </form>
 

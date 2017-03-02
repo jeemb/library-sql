@@ -71,13 +71,6 @@
         return $app->redirect("/author/".$id);
     });
 
-    $app->post('/checkout_book/{id}', function($id) use ($app) {
-        $book = Book::find($id);
-        $patron_id = $_POST['checkout-book'];
-        $book->checkout();
-        return $app->redirect("/patron/".$patron_id);
-    });
-
     $app->patch('/edit_book/{id}', function($id) use ($app) {
         $book = Book::find($id);
         $new_title = $_POST['title'];
@@ -126,6 +119,34 @@
     $app->get('/patron/{id}', function($id) use($app) {
         $patron = Patron::find($id);
         return $app['twig']->render('patron.html.twig', ['patron' => $patron, 'books' => $patron->getBooks(), 'overdue_books' => $patron->getOverdue(), 'booksout' => $patron->getBooksOut()]);
+    });
+
+    $app->patch('/edit_patron/{id}', function ($id) use ($app) {
+         $patron = Patron::find($id);
+         $patron->update($_POST['new-name']);
+
+         return $app->redirect("/patron/".$id);
+    });
+
+    $app->delete('/delete_patron/{id}', function ($id) use ($app) {
+         $patron = Patron::find($id);
+         $patron->delete();
+
+         return $app->redirect("/patrons");
+    });
+
+    $app->post('/checkout_book/{id}', function($id) use ($app) {
+        $book = Book::find($id);
+        $patron_id = $_POST['patron'];
+        $book->checkout($patron_id);
+        return $app->redirect("/patron/".$patron_id);
+    });
+
+    $app->post('/return_book/{id}', function ($id) use ($app) {
+        $book = Book::find($_POST['book']);
+        $book->returnCopy($id);
+
+        return $app->redirect("/patron/".$id);
     });
 
     return $app;

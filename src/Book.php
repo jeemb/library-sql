@@ -121,7 +121,7 @@ class Book
     {
         $checkout_date = date('Y-m-d');
         $due_date = date("Y-m-d", strtotime("+14 days"));
-        $false = "false";
+        $false = 0;
 
         $this->setCopiesIn($this->getCopiesIn()-1);
         $this->setCopiesOut($this->getCopiesOut()+1);

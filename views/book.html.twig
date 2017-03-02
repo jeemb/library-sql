@@ -27,8 +27,8 @@
 {% if all_patrons is not empty %}
 
 <form action="/checkout_book/{{ book.getId }}" method="post">
-    <label for="checkout-book">Checkout Book</label>
-        <select name="checkout-book">
+    <label for="patron">Checkout Book</label>
+        <select name="patron">
             {% for patron in all_patrons %}
             <option value="{{ patron.getId }}">{{ patron.getName }}</option>
             {% endfor %}

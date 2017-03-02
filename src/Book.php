@@ -119,6 +119,20 @@ class Book
 
     }
 
+    function addOverdue($id)
+    {
+        $checkout_date = date("Y-m-d", strtotime("-14 days"));
+        $due_date = date('Y-m-d', strtotime("-1 days"));
+        $false = "false";
+
+        $this->setCopiesIn($this->getCopiesIn()-1);
+        $this->setCopiesOut($this->getCopiesOut()+1);
+        $GLOBALS['DB']->exec("UPDATE books SET copies_in = {$this->getCopiesIn()}, copies_out = {$this->getCopiesOut()};");
+
+        $GLOBALS['DB']->exec("INSERT INTO books_patrons (book_id, patron_id, checkout_date, due_date, returned) VALUES ({$this->getId()}, {$id}, '{$checkout_date}', '{$due_date}', {$false});");
+
+    }
+
     function returnCopy($id)
     {
 

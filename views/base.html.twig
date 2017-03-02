@@ -2,14 +2,16 @@
 <html>
     <head>
         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
+        <link href='/css/styles.css' rel='stylesheet' type='text/css'>
         <title>Library - {% block title %}{% endblock %}</title>
     </head>
     <body>
         <div class="container">
-            <button class="btn btn-info"><a href="/books">All Books</a></button>
-            <button class="btn btn-info"><a href="/authors">All Authors</a></button>
-            <button class="btn btn-info"><a href="/patrons">All Patrons</a></button>
-
+            <div id="nav">
+                <button class="btn btn-info"><a href="/books">All Books</a></button>
+                <button class="btn btn-info"><a href="/authors">All Authors</a></button>
+                <button class="btn btn-info"><a href="/patrons">All Patrons</a></button>
+            </div>
 
             {% block content %}
             {% endblock %}

@@ -24,23 +24,41 @@
     </ul>
 </ul>
 
+<div class="edit_delete">
+
+    <form action="/edit_book/{{ book.getId }}" method="post">
+        <input type="hidden" name="_method" value="patch">
+        <label for="edit-book">Edit Book</label>
+        <input type="text" name="title" value="{{ book.getTitle }}" class="form-control">
+        <input type="number" name="total-copies" min="{{book.getCopiesOut}}" value="{{ book.getTotalCopies }}" class="form-control">
+
+        <button type="submit" class="btn btn-warning">Edit</button>
+    </form>
+
+    <form action="/delete_book/{{ book.getId }}" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <label for="delete-book">Delete Book</label>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+
 {% if all_patrons is not empty %}
 
 <form action="/checkout_book/{{ book.getId }}" method="post">
     <label for="patron">Checkout Book</label>
-        <select name="patron">
+        <select name="patron" class = "form-control">
             {% for patron in all_patrons %}
             <option value="{{ patron.getId }}">{{ patron.getName }}</option>
             {% endfor %}
         </select>
-    <button type="submit">Checkout</button>
+    <button type="submit" class="btn btn-info">Checkout</button>
 </form>
 {% endif %}
 
 {% if all_authors is not empty %}
 <form action="/assign_author/{{ book.getId }}" method="post">
     <label for="assign-author">Assign an author</label>
-        <select name="assign-author">
+        <select name="assign-author" class="form-control">
             {% for author in all_authors %}
             <option value="{{ author.getId }}">{{ author.getName }}</option>
             {% endfor %}
@@ -49,19 +67,5 @@
 </form>
 {% endif %}
 
-<form action="/edit_book/{{ book.getId }}" method="post">
-    <input type="hidden" name="_method" value="patch">
-    <label for="edit-book">Edit Book</label>
-    <input type="text" name="title" value="{{ book.getTitle }}">
-    <input type="number" name="total-copies" min="{{book.getCopiesOut}}" value="{{ book.getTotalCopies }}">
-
-    <button type="submit" class="btn btn-warning">Edit</button>
-</form>
-
-<form action="/delete_book/{{ book.getId }}" method="post">
-    <input type="hidden" name="_method" value="delete">
-    <label for="delete-book">Delete Book</label>
-    <button type="submit" class="btn btn-danger">Delete</button>
-</form>
 
 {% endblock %}

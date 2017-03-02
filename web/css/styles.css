@@ -1,0 +1,36 @@
+form {
+    margin-bottom: 40px;
+
+    background: rgba(60, 60, 60, 0.5);
+    border: 4px double grey;
+    padding:10px;
+    width: 60%;
+}
+
+.form-control {
+}
+
+.edit_delete {
+    float: right;
+    width: 400px;
+}
+
+li {
+    list-style: none;
+}
+
+#nav {
+    padding-top: 15px;
+    margin:0px;
+}
+
+body {
+    background-image: url("/library.jpg");
+    background-size:130% auto;
+
+    color:#ddd;
+}
+
+hr {
+    clear:both;
+}

@@ -7,6 +7,10 @@ form {
     width: 60%;
 }
 
+.container {
+    /*background: rgba(60, 60, 60, 0.5);*/
+}
+
 .form-control {
 }
 
@@ -26,7 +30,7 @@ li {
 
 body {
     background-image: url("/library.jpg");
-    background-size:130% auto;
+    background-size:130% 100vh;
 
     color:#ddd;
 }
